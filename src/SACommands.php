@@ -40,7 +40,7 @@ class SACommands
     {
         $output     = null;
         $return_var = null;
-        exec(escapeshellcmd($this->binSaLearn.' '.$cmd), $output, $return_var);
+        exec(escapeshellcmd(static::saLearnBin().' '.$cmd), $output, $return_var);
         return array($output, $return_var);
     }
 

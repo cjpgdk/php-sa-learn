@@ -78,7 +78,7 @@ class SALearnCommand extends Command
     {
         $files = $input->getArgument('file');
         
-        list($execOutput, $return_var) = $this->exec($this->binWhich.' sa-learn');
+        list($execOutput, $return_var) = SACommands::exec($this->binWhich.' sa-learn');
         if (!$this->testReturnStatus($return_var, 0)) {
             die('error');
         }
