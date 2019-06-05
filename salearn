@@ -10,6 +10,7 @@ $application = new Application();
 
 //$application->add(new \CJPGDK\SALearn\SALearnCommand());
 $application->add(new \CJPGDK\SALearn\VersionCommand('version'));
+$application->add(new \CJPGDK\SALearn\HamCommand('ham'));
 
 
 $application->run();

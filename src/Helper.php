@@ -207,7 +207,11 @@ class Helper
     
     private static function callOnRun($cmd, $type, ...$params)
     {
-        if ($type == static::ONRUN_TYPE_OVERRIDE && ($onRun = isset(static::$onRun[$cmd]) ? static::$onRun[$cmd] : null)) {
+        if (empty(static::$onRun)) {
+            return;
+        }
+        $onRun = isset(static::$onRun[$cmd]) ? static::$onRun[$cmd] : null;
+        if ($type == static::ONRUN_TYPE_OVERRIDE && $onRun) {
             if (!is_array($onRun) && is_callable($onRun)) {
                 $onRun(...$params);
                 return true;;

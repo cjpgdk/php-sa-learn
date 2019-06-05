@@ -55,7 +55,6 @@ class SALearnCommand extends Command
         $this->addOption('siteconfigpath', '', InputOption::VALUE_REQUIRED, 'Path for site configs', '/usr/etc/spamassassin');
         $this->addOption('cf', '', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Additional line of configuration', null);
         $this->addOption('debug', 'D', InputOption::VALUE_REQUIRED, '[area=n,...] Print debugging messages', null);
-        $this->addOption('sa-version', '', InputOption::VALUE_NONE, 'Print version', null);
         
         $this->addArgument('file', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Files and folder to read');
         
@@ -77,23 +76,9 @@ class SALearnCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output) 
     {
-        $files = $input->getArgument('file');
+        $output->writeln('START');
         
-        list($execOutput, $return_var) = SACommands::exec($this->binWhich.' sa-learn');
-        if (!$this->testReturnStatus($return_var, 0)) {
-            die('error');
-        }
         
-        SACommands::saLearnBin($execOutput[0]);
-        SACommands::setInputInterface($input);
-        SACommands::setOutputInterface($output);
-        
-        // options that if pressent just prints end exit.
-        $this->_execEcho(SACommands::version(), true);
-
-        if (empty($files) && !$input->getOption('dump')) {
-            $output->writeln('Files to process are missing.');
-        }
         
         $output->writeln('DONE');
     }

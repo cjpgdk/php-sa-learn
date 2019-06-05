@@ -1,8 +1,6 @@
 <?php
 namespace CJPGDK\SALearn;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use CJPGDK\SALearn\Helper;
 
 /**
@@ -12,12 +10,27 @@ use CJPGDK\SALearn\Helper;
  */
 class SACommands 
 {
-
-    public static function version() 
+    public static function learnHam(array $files, $username = null, $useIgnores = false, $maxSize = 0, $mbx = false, $mbox = false, $folders = null)
     {
-        return Helper::run([
-            Helper::saLearn(),
-            ' --version'
-        ]);
+        $cmd  = Helper::saLearn();
+        $cmd .= ' --ham';
+        $cmd .= ($username ? ' --username='.$username : '');
+        $cmd .= ' --max-size '.(intval($maxSize)>0 ? intval($maxSize) : 0);
+        $cmd .= ($useIgnores ? ' --use-ignores' : '');
+        $cmd .= ($mbx ? ' --mbx' : '');
+        $cmd .= ($mbox ? ' --mbox' : '');
+        $cmd .= ($mbox ? ' --folders='.$folders : '');
+        $cmd .= ' '.implode(' ', $files);
+        echo $cmd;
+//        return Helper::run($cmd);
+    }
+
+    /**
+     * Call: sa-learn --version
+     * @return string
+     */
+    public static function version()
+    {
+        return Helper::run(Helper::saLearn().' --version');
     }
 }
