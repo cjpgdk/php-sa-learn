@@ -76,6 +76,9 @@ class SALearnCommand extends Command
         $output     = null;
         $return_var = null;
         exec(escapeshellcmd($this->binWhich.' sa-learn'), $output, $return_var);
+        if ($return_var <> 0) {
+            die('error');
+        }
         print_r($output);
         print_r($return_var);
     }
