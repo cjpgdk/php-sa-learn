@@ -25,7 +25,7 @@ class SACommands
     public static function version() 
     {
         if (static::$input && static::$input->getOption('sa-version')) {
-            list($execOutput, $return_var) = $this->exec('--version');
+            list($execOutput, $return_var) = static::exec('--version');
             return $execOutput[0];
         }
         return static::$input->getOption('sa-version');
