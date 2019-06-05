@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use CJPGDK\SALearn\SACommands;
 
 /**
  * Description of SALearnCommand
@@ -19,12 +20,6 @@ class SALearnCommand extends Command
      * @var string
      */
     private $binWhich = '/usr/bin/which';
-    
-    /**
-     * Path to sa-learn binary
-     * @var string
-     */
-    private $binSaLearn = '';
     
     public function __construct($name = null) {
         parent::__construct('sa-learn');
@@ -59,7 +54,7 @@ class SALearnCommand extends Command
         $this->addOption('siteconfigpath', '', InputOption::VALUE_REQUIRED, 'Path for site configs (default: /usr/etc/spamassassin)', '/usr/etc/spamassassin');
         $this->addOption('cf', '', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Additional line of configuration', null);
         $this->addOption('debug', 'D', InputOption::VALUE_REQUIRED, '[area=n,...] Print debugging messages', null);
-        $this->addOption('sa-version', 'sav', InputOption::VALUE_NONE, 'Print version', null);
+        $this->addOption('sa-version', '', InputOption::VALUE_NONE, 'Print version', null);
         
         $this->addArgument('file', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Files and folder to read');
         
@@ -84,34 +79,44 @@ class SALearnCommand extends Command
         $files = $input->getArgument('file');
         
         list($execOutput, $return_var) = $this->exec($this->binWhich.' sa-learn');
-        if ($this->testReturnStatus($return_var, 0)) {
+        if (!$this->testReturnStatus($return_var, 0)) {
             die('error');
         }
-        $this->binSaLearn = trim($execOutput[0]);
         
-        if ($input->getOption('sa-version')) {
-            list($execOutput, $return_var) = $this->exec($this->binSaLearn.' --version');
-            print_r($execOutput);
-            exit(0);
+        SACommands::saLearnBin($execOutput[0]);
+        SACommands::setInputInterface($input);
+        SACommands::setOutputInterface($output);
+        
+        // options that if pressent just prints end exit.
+        $this->_execEcho(SACommands::version(), true);
+        
+        $output->writeln('DONE');
+    }
+    
+    private function _exec($res, $exitOnOk = false) 
+    {
+        if (is_callable($res)) {
+            SACommands::$output->writeln($res());
+            if ($exitOnOk) { exit(0); }
+        } else if($res) {
+            SACommands::$output->writeln($res);
+            if ($exitOnOk) { exit(0); }
         }
     }
     
+    /**
+     * compare $result and $expect
+     * @param mixed $result
+     * @param mixed $expect
+     * @return boolean
+     */
     private function testReturnStatus($result, $expect = 0)
     {
-        
+        if ($result <> $expect) {
+            return false;
+        }
+        return true;
     }
-
-    /**
-     * Ececute an command with php exec
-     * @param string $cmd
-     * @return array $output, $return_var
-     */
-    private function exec($cmd) 
-    {
-        $output     = null;
-        $return_var = null;
-        exec(escapeshellcmd($cmd), $output, $return_var);
-        return array($output, $return_var);
-    }
+    
 
 }
