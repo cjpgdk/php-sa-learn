@@ -12,17 +12,17 @@ use CJPGDK\SALearn\SACommands;
 use Symfony\Component\Process\Process;
 
 /**
- * Description of HamCommand
+ * Description of SpamCommand
  *
  * @author Christian M. Jensen
  */
-class HamCommand extends Command
+class SpamCommand extends Command
 {
 
     protected function configure()
     {
-        $this->setProcessTitle('Learn messages as ham (non-spam)');
-        $this->setDescription('Learn messages as ham (non-spam)');
+        $this->setProcessTitle('Learn messages as spam)');
+        $this->setDescription('Learn messages as spam');
         $this->addOption('use-ignores', '', InputOption::VALUE_NONE, 'Use bayes_ignore_from and bayes_ignore_to', null);
         $this->addOption('folders', 'f', InputOption::VALUE_REQUIRED, 'Read list of files/directories from file', null);
         $this->addOption('mbox', '', InputOption::VALUE_NONE, 'Input sources are in mbox format', null);
@@ -40,7 +40,7 @@ class HamCommand extends Command
             }
         };
         
-        SACommands::learnHam(
+        SACommands::learnSpam(
                 $input->getArgument('file'),
                 $input->getOption('username'),
                 $input->getOption('use-ignores'),

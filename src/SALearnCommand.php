@@ -28,8 +28,6 @@ class SALearnCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('ham', '', InputOption::VALUE_NONE, 'Learn messages as ham (non-spam)', null);
-        $this->addOption('spam', '', InputOption::VALUE_NONE, 'Learn messages as spam', null);
         $this->addOption('forget', '', InputOption::VALUE_NONE, 'Forget a message', null);
         $this->addOption('use-ignores', '', InputOption::VALUE_NONE, 'Use bayes_ignore_from and bayes_ignore_to', null);
         $this->addOption('sync', '', InputOption::VALUE_NONE, 'Synchronize the database and the journal if needed', null);
