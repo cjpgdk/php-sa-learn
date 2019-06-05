@@ -12,9 +12,12 @@
         "symfony/console": "v3.2.14"
     },
     "autoload": {
-        "psr-4": { "CJPGDK\\SALearn\\": "src/" }
+        "psr-4": { 
+            "CJPGDK\\SALearn\\": "src/" 
+        }
     },
     "prefer-stable": true,
+    "minimum-stability": "dev",
     "repositories": [
         {
             "url": "https://github.com/symfony/console.git",
