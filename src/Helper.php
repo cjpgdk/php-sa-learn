@@ -190,6 +190,7 @@ class Helper
         static::callOnRun($cmd, static::ONRUN_TYPE_PRE, $cmd, $cwd, $env, $input, $timeout, $options);
         
         $process = new Process($cmd, $cwd, $env, $input, $timeout, $options);
+        $process->setTimeout(3600);
         
         static::callOnRun($cmd, static::ONRUN_TYPE_PRE_RUN, $process);
         
