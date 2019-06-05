@@ -1,0 +1,20 @@
+{
+    "banner": [
+          "This file is part of the php-sa-learn project.",
+          "",
+          "(c) Christian M. Jensen <cmj@cjpg.dk>",
+          "",
+          "This source file is subject to the MIT license that is bundled",
+          "with this source code in the file LICENSE."
+    ],
+	"files": ["salearn"],
+	"output": "bin/salearn.phar",
+	"stub": true,
+	"main": "salearn",
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php",
+        "KevinGH\\Box\\Compactor\\Json"
+    ],
+	"datetime": "release-date"
+}
