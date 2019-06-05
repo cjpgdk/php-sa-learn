@@ -14,7 +14,17 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class SALearnCommand extends Command
 {
-    private $binWhich = '/usr/bin/which'; 
+    /**
+     * Path to which binary
+     * @var string
+     */
+    private $binWhich = '/usr/bin/which';
+    
+    /**
+     * Path to sa-learn binary
+     * @var string
+     */
+    private $binSaLearn = '';
     
     public function __construct($name = null) {
         parent::__construct('sa-learn');
@@ -49,7 +59,7 @@ class SALearnCommand extends Command
         $this->addOption('siteconfigpath', '', InputOption::VALUE_REQUIRED, 'Path for site configs (default: /usr/etc/spamassassin)', '/usr/etc/spamassassin');
         $this->addOption('cf', '', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Additional line of configuration', null);
         $this->addOption('debug', 'D', InputOption::VALUE_REQUIRED, '[area=n,...] Print debugging messages', null);
-        $this->addOption('version', 'V', InputOption::VALUE_NONE, 'Print version', null);
+        $this->addOption('sa-version', 'sav', InputOption::VALUE_NONE, 'Print version', null);
         
         $this->addArgument('file', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Files and folder to read');
         
@@ -73,19 +83,35 @@ class SALearnCommand extends Command
     {
         $files = $input->getArgument('file');
         
-        $output     = null;
-        $return_var = null;
-        exec(escapeshellcmd($this->binWhich.' sa-learn'), $output, $return_var);
-        if ($return_var <> 0) {
+        list($execOutput, $return_var) = $this->exec($this->binWhich.' sa-learn');
+        if ($this->testReturnStatus($return_var, 0)) {
             die('error');
         }
-        print_r($output);
-        print_r($return_var);
+        $this->binSaLearn = trim($execOutput[0]);
+        
+        if ($input->getOption('sa-version')) {
+            list($execOutput, $return_var) = $this->exec($this->binSaLearn.' --version');
+            print_r($execOutput);
+            exit(0);
+        }
     }
     
-    
-    private function locateBin($name) {
+    private function testReturnStatus($result, $expect = 0)
+    {
         
+    }
+
+    /**
+     * Ececute an command with php exec
+     * @param string $cmd
+     * @return array $output, $return_var
+     */
+    private function exec($cmd) 
+    {
+        $output     = null;
+        $return_var = null;
+        exec(escapeshellcmd($cmd), $output, $return_var);
+        return array($output, $return_var);
     }
 
 }
