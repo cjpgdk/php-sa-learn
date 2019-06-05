@@ -89,11 +89,11 @@ class SALearnCommand extends Command
         
         // options that if pressent just prints end exit.
         $this->_execEcho(SACommands::version(), true);
-        
+
         $output->writeln('DONE');
     }
     
-    private function _exec($res, $exitOnOk = false) 
+    private function _execEcho($res, $exitOnOk = false) 
     {
         if (is_callable($res)) {
             SACommands::$output->writeln($res());
