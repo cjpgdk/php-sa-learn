@@ -1,6 +1,8 @@
-test: composer
-	vendor/bin/box --compile;
+test: box
+	vendor/humbug/box/bin/box --compile -d ../../../../;
+
+box: composer
+	chmod +x vendor/humbug/box/bin/box;
 
 composer:
 	composer install -o;
-	composer bin box require --dev humbug/box;
