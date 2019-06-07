@@ -3,7 +3,7 @@ test: box
 
 box: composer
 	chmod +x vendor/humbug/box/bin/box;
-	composer --no-dev -o --quiet --working-dir=vendor/humbug/box install
+	cd vendor/humbug/box;composer --no-dev -o install;cd ../../../;
 
 composer:
 	composer install -o;
