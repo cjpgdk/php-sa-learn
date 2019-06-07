@@ -1,5 +1,6 @@
 test: composer
-	vendor/bin/phpunit --coverage-text --colors=never;
+	vendor/bin/box --compile;
 
 composer:
 	composer install -o;
+	composer bin box require --dev humbug/box;

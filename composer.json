@@ -28,5 +28,8 @@
             "url": "https://github.com/symfony/process.git",
             "type": "git"
         }
-    ]
+    ],
+    "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.3"
+    }
 }
