@@ -9,8 +9,10 @@ stages:
 before_script:
   - apt-get update
   - apt-get install --assume-yes zip unzip git 
-  - \[ ! -f /usr/bin/composer \] && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" || echo "composer installed at /usr/bin/composer"
-  - \[ -f composer-setup.php \] && php composer-setup.php --filename=composer --install-dir=/usr/bin && php -r "unlink('composer-setup.php');" || echo "composer installed at /usr/bin/composer"
+  - mkdir -p /storage/composer/${CI_PROJECT_ID}/${CI_JOB_STAGE}
+  - [ ! -f /storage/composer/${CI_PROJECT_ID}/${CI_JOB_STAGE}/composer ] && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" || echo "composer installed at /storage/composer/${CI_PROJECT_ID}/${CI_JOB_STAGE}/composer"
+  - [ -f composer-setup.php ] && php composer-setup.php --filename=composer --install-dir=/storage/composer/${CI_PROJECT_ID}/${CI_JOB_STAGE} && php -r "unlink('composer-setup.php');" || echo "composer installed at /storage/composer/${CI_PROJECT_ID}/${CI_JOB_STAGE}/composer"
+  - [ ! -f /usr/bin/composer ] && ln -s /storage/composer/${CI_PROJECT_ID}/${CI_JOB_STAGE}/composer /usr/bin/composer || echo "composer installed at /usr/bin/composer"
   - composer global require humbug/box
 
 test56:
